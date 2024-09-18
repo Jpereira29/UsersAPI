@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:5076"  
+      - "5076:80"  
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
