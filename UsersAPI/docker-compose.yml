@@ -3,13 +3,13 @@
 services:
   web:
     build:
-      context: ./UsersAPI # Ajuste o contexto se necessário
+      context: .
       dockerfile: Dockerfile
     ports:
       - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=db;Database=YourDB;User Id=sa;Password=your_password_here;
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyAppDb;User Id=sa;Password=your_password_here;
     depends_on:
       - db
 
