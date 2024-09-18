@@ -2,12 +2,14 @@
 
 services:
   web:
-    image: webapiapp
     build:
-      context: ./WebApiApp
+      context: ./UsersAPI # Ajuste o contexto se necessário
       dockerfile: Dockerfile
     ports:
       - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db;Database=YourDB;User Id=sa;Password=your_password_here;
     depends_on:
       - db
 
