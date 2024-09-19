@@ -1,21 +1,21 @@
-﻿# Use the official .NET Core SDK image to build the app
+﻿# Use a imagem base do .NET 8
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+# Use a imagem do SDK do .NET 8 para compilar e publicar a aplicação
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["SeuProjeto.csproj", "./"]
+RUN dotnet restore "SeuProjeto.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "SeuProjeto.csproj" -c Release -o /app/build
+RUN dotnet publish "SeuProjeto.csproj" -c Release -o /app/publish
+
+# Use a imagem base para rodar a aplicação
+FROM base AS final
 WORKDIR /app
-
-# Copy the .csproj file and restore dependencies
-COPY ["UsersAPI.csproj", "./"]
-RUN dotnet restore
-
-# Copy the remaining source code and build the app
-COPY . ./ 
-RUN dotnet publish -c Release -o out
-
-# Use the official ASP.NET Core runtime image to run the app
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-WORKDIR /app
-COPY --from=build /app/out .
-
-EXPOSE 5001
-
-# Specify the entry point for the app
-ENTRYPOINT ["dotnet", "UsersAPI.dll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "SeuProjeto.dll"]
