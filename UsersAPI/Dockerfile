@@ -1,5 +1,5 @@
 ﻿# Use the official .NET Core SDK image to build the app
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM public.ecr.aws/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copy the .csproj file and restore dependencies
@@ -11,11 +11,11 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Use the official ASP.NET Core runtime image to run the app
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM public.ecr.aws/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-EXPOSE 5076
+EXPOSE 80
 
 # Specify the entry point for the app
 ENTRYPOINT ["dotnet", "UsersAPI.dll"]
