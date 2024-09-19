@@ -14,7 +14,10 @@ namespace UsersAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Usuario.ToListAsync();
+            return Ok(new
+            {
+                status = "success"
+            });
         }
     }
 }
