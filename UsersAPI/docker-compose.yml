@@ -10,3 +10,21 @@ services:
       - "80:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=YourPassword!;TrustServerCertificate=True
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - SA_PASSWORD=YourPassword!
+      - ACCEPT_EULA=Y
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - sqlserverdata:/var/opt/mssql
+
+volumes:
+  sqlserverdata:
+    driver: local
